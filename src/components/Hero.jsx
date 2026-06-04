@@ -174,13 +174,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── Scroll hint ── */}
-      <div className="scroll-indicator">
-        <div className="scroll-mouse">
-          <div className="scroll-wheel" />
-        </div>
-        <span className="scroll-label">Scroll</span>
-      </div>
     </section>
   )
 }
