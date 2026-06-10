@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { openBooking } from '../utils/booking'
 
 const WAVE_DELAYS = [0, 0.12, 0.24, 0.36, 0.48, 0.60, 0.72, 0.84, 0.96]
 
@@ -12,8 +13,77 @@ function Waveform() {
   )
 }
 
+function AudioPlayer({ onClose }) {
+  const audioRef = useRef(null)
+  const [playing, setPlaying] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [duration, setDuration] = useState(0)
+
+  useEffect(() => {
+    const el = audioRef.current
+    if (!el) return
+    el.play().then(() => setPlaying(true)).catch(() => {})
+    const onTime = () => setProgress(el.currentTime)
+    const onMeta = () => setDuration(el.duration)
+    const onEnd  = () => { setPlaying(false); setProgress(0) }
+    el.addEventListener('timeupdate', onTime)
+    el.addEventListener('loadedmetadata', onMeta)
+    el.addEventListener('ended', onEnd)
+    return () => {
+      el.removeEventListener('timeupdate', onTime)
+      el.removeEventListener('loadedmetadata', onMeta)
+      el.removeEventListener('ended', onEnd)
+      el.pause()
+    }
+  }, [])
+
+  const toggle = () => {
+    const el = audioRef.current
+    if (!el) return
+    playing ? el.pause() : el.play()
+    setPlaying(p => !p)
+  }
+
+  const seek = (e) => {
+    const el = audioRef.current
+    if (!el || !duration) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    el.currentTime = ((e.clientX - rect.left) / rect.width) * duration
+  }
+
+  const fmt = (s) => {
+    const t = Math.floor(s || 0)
+    return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`
+  }
+
+  return (
+    <div className="audio-player">
+      <audio ref={audioRef} src="/sample-call.mp3" preload="metadata" />
+      <div className="ap-header">
+        <span className="ap-title">Sample AI Receptionist Call</span>
+        <button className="ap-close" onClick={onClose} aria-label="Close">✕</button>
+      </div>
+      <div className="ap-controls">
+        <button className="ap-play" onClick={toggle} aria-label={playing ? 'Pause' : 'Play'}>
+          {playing
+            ? <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            : <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          }
+        </button>
+        <div className="ap-bar" onClick={seek}>
+          <div className="ap-bar-track">
+            <div className="ap-bar-fill" style={{ width: duration ? `${(progress / duration) * 100}%` : '0%' }} />
+          </div>
+        </div>
+        <span className="ap-time">{fmt(progress)} / {fmt(duration)}</span>
+      </div>
+    </div>
+  )
+}
+
 export default function Hero() {
   const parallaxRefs = useRef([])
+  const [showAudio, setShowAudio] = useState(false)
 
   useEffect(() => {
     const speeds = [0.12, 0.09, -0.05, -0.07, 0.06, 0.08]
@@ -164,14 +234,16 @@ export default function Hero() {
         </div>
 
         <div className="hero-ctas">
-          <a href="#demo" className="cta-primary">Book Demo</a>
-          <a href="#demo" className="cta-secondary">
+          <button className="cta-primary" onClick={openBooking}>Book Demo</button>
+          <button className="cta-secondary" onClick={() => setShowAudio(s => !s)}>
             <div className="play-btn">
               <svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9" /></svg>
             </div>
             Listen to Sample Call
-          </a>
+          </button>
         </div>
+
+        {showAudio && <AudioPlayer onClose={() => setShowAudio(false)} />}
       </div>
 
     </section>

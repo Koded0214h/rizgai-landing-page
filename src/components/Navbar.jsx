@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { openBooking } from '../utils/booking'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -23,10 +24,9 @@ export default function Navbar() {
         <div className="navbar-links">
           <a href="#features">Features</a>
           <a href="#industries">Industries</a>
-          <a href="#pricing">Pricing</a>
         </div>
 
-        <a href="#demo" className="navbar-cta">Book Demo</a>
+        <button className="navbar-cta" onClick={openBooking}>Book Demo</button>
 
         <button
           className={`nav-burger${menuOpen ? ' open' : ''}`}
@@ -41,8 +41,7 @@ export default function Navbar() {
         <div className="nav-mobile-inner">
           <a href="#features" onClick={close}>Features</a>
           <a href="#industries" onClick={close}>Industries</a>
-          <a href="#pricing" onClick={close}>Pricing</a>
-          <a href="#demo" className="nav-mobile-cta" onClick={close}>Book Demo</a>
+          <button className="nav-mobile-cta" onClick={() => { close(); openBooking() }}>Book Demo</button>
         </div>
       </div>
     </nav>

@@ -175,7 +175,7 @@ export default function MeetReceptionist() {
   const colGap = hovered !== null ? '0px' : '16px'
 
   return (
-    <section className="meet-section">
+    <section id="features" className="meet-section">
       <div className="section-header">
         <p className="section-tag">Product</p>
         <h2 className="section-title">Meet Your AI Receptionist</h2>

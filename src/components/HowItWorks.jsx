@@ -205,7 +205,7 @@ export default function HowItWorks() {
   const pct = (progress / TOTAL) * 100
 
   return (
-    <section className="hiw-section">
+    <section id="how-it-works" className="hiw-section">
       <div className="section-header">
         <p className="section-tag">How It Works</p>
         <h2 className="section-title">Up and Running in Minutes</h2>

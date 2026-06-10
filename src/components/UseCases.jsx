@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {
   Heart, Scale, Home, Car, Scissors, Smile, Dumbbell, Wrench, ArrowRight,
 } from 'lucide-react'
+import { openBooking } from '../utils/booking'
 
 /* ── Industry data , positioned to form the letter R ── */
 /*
@@ -75,7 +76,7 @@ export default function UseCases() {
   const ind = active !== null ? INDUSTRIES[active] : null
 
   return (
-    <section className="uc-section">
+    <section id="industries" className="uc-section">
       <div className="section-header">
         <p className="section-tag">Use Cases</p>
         <h2 className="section-title">Built for Every Industry</h2>
@@ -141,9 +142,9 @@ export default function UseCases() {
                 <p className="uc-d-tag">{ind.tagline}</p>
                 <h3 className="uc-d-title">{ind.name}</h3>
                 <p className="uc-d-desc">{ind.desc}</p>
-                <a href="#demo" className="uc-d-cta">
+                <button className="uc-d-cta" onClick={openBooking}>
                   Book a demo <ArrowRight size={15} />
-                </a>
+                </button>
               </div>
             )}
           </div>

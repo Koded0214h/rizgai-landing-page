@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import { Mail } from 'lucide-react'
+import { openBooking } from '../utils/booking'
 
 const IconX = () => (
   <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
@@ -113,19 +114,18 @@ const LINKS = [
   {
     title: 'Product',
     items: [
-      { label: 'Features',     href: '#' },
-      { label: 'How It Works', href: '#' },
-      { label: 'Use Cases',    href: '#' },
-      { label: 'Pricing',      href: '#' },
+      { label: 'Features',     href: '#features' },
+      { label: 'How It Works', href: '#how-it-works' },
+      { label: 'Industries',   href: '#industries' },
     ],
   },
   {
     title: 'Company',
     items: [
-      { label: 'About',    href: '#' },
-      { label: 'Blog',     href: '#' },
-      { label: 'Careers',  href: '#' },
-      { label: 'Press',    href: '#' },
+      { label: 'About Founder', href: '#about' },
+      { label: 'Blog',          href: '#' },
+      { label: 'Careers',       href: '#' },
+      { label: 'Press',         href: '#' },
     ],
   },
 ]
@@ -182,9 +182,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#demo" className="ft-link ft-demo-link">
+                <button className="ft-link ft-demo-link" onClick={openBooking} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
                   Book a Demo →
-                </a>
+                </button>
               </li>
             </ul>
           </div>
